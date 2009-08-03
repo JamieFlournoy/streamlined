@@ -1,6 +1,10 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '../../../test_helper'))
 require 'streamlined/helpers/header_helper'
 
+require 'action_controller'
+require 'action_controller/assertions/selector_assertions'
+include ActionController::Assertions::SelectorAssertions
+
 describe "HeaderHelper" do
   
   class FancyController
