@@ -103,8 +103,9 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
       custom_value = custom_column_value(view, model_underscore, name)   
       options = custom_value ? html_options.merge(:value => custom_value) : html_options
       if options[:type].to_s =~ /^text(_?)area$/i
-        options.delete(:type)
-        result = view.text_area(model_underscore, name, options)
+        textarea_options = options.dup
+        textarea_options.delete(:type)
+        result = view.text_area(model_underscore, name, textarea_options)
       else
         result = view.input(model_underscore, name, options)
       end
