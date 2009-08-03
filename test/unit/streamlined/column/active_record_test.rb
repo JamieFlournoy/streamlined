@@ -118,6 +118,12 @@ describe "Streamlined::Column::ActiveRecord" do
     assert_equal 'result', @ar.render_td_edit(view, 'item')
   end
   
+  it "render td edit with html options containing the textarea specifier" do
+    @ar.html_options = { :type => 'textarea', :cols => 123, :rows => 45 }
+    (view = flexmock).should_receive(:text_area).with('model', 'column', { :cols => 123, :rows => 45 }).and_return('result').once
+    assert_equal 'result', @ar.render_td_edit(view, 'item')
+  end
+
   it "render td as edit" do
     view = flexmock(:model_underscore => 'model', :crud_context => :edit)
     view.should_receive(:input).with('model', 'column', {}).and_return('input').once
