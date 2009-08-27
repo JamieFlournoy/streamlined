@@ -96,6 +96,7 @@ describe "Streamlined::Column::Association" do
     expected_js = "Streamlined.Relationships.open_relationship('InsetTable::some_name::123::SomeClass', this, '/controller_path')"
     view.should_receive(:link_to_function).with("Edit", expected_js).and_return('link').once
     view.should_receive(:crud_context).and_return(:list)
+    view.should_receive(:url_for).with(:controller => 'controller_path').and_return('/controller_path').once
     
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>link"
     assert_equal expected, @association.render_td(view, item)
@@ -121,8 +122,10 @@ describe "Streamlined::Column::Association" do
   # end
   
   it "render td list" do
+    view, item = view_and_item_mocks
+    view.should_receive(:url_for).with(:controller => 'controller_path').and_return('/controller_path').once
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>link"
-    assert_equal expected, @association.render_td_list(*view_and_item_mocks)
+    assert_equal expected, @association.render_td_list(view, item)
   end
   
   it "render td list with create only true" do
