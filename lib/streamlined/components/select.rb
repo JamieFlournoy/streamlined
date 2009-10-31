@@ -1,4 +1,11 @@
 module Streamlined::Components
+
+  class SelectHelper
+    include ActionView::Helpers::FormOptionsHelper
+    include ActionView::Helpers::FormTagHelper
+    include ActionView::Helpers::TagHelper
+  end
+
   # Create a html select component with args corresponding to the Rails
   # select method, plus the ActionView::Base instance
   #
@@ -17,6 +24,8 @@ module Streamlined::Components
     OPTIONAL_ATTRS = [:options, :html_options]
     attr_accessor *(REQUIRED_ATTRS + OPTIONAL_ATTRS)
     include HashInit
+
+    @@select_helper = SelectHelper.new
 
     def initialize(*args, &blk)
       super(*args, &blk)
@@ -40,9 +49,9 @@ module Streamlined::Components
     end
     
     def render
-      normal_select = view.select(object, method, choices, options, html_options)
+      normal_select = @@select_helper.select(object, method, choices, options, html_options)
       name = "#{object}[#{method}][]"
-      hidden_none_select = view.hidden_field_tag(name, STREAMLINED_SELECT_NONE)
+      hidden_none_select = @@select_helper.hidden_field_tag(name, STREAMLINED_SELECT_NONE)
       normal_select + hidden_none_select
     end
     
